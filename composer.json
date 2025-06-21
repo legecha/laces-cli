@@ -1,0 +1,23 @@
+{
+    "name": "legecha/laces-cli",
+    "description": "CLI tool for building and releasing the Laces starter kit",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Laces\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "legecha",
+            "email": "code@legecha.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.2",
+        "symfony/console": "^7.3"
+    },
+    "bin": ["bin/laces"]
+}
