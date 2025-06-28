@@ -9,6 +9,8 @@ use Laces\Actions\GetLatestLacesVersions;
 use Laces\Actions\GetLatestLaravelVersion;
 use Laces\Actions\GetLatestLivewireStarterKitVersion;
 use Laces\Actions\HandleError;
+use Laces\Actions\InstallLaravelWithLivewireStarterKit;
+use Laces\Actions\SetupWorkingFolder;
 use Laces\Traits\Debuggable;
 use Laces\Traits\Interfaceable;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -55,6 +57,7 @@ class BuildCommand extends Command
                 ['Livewire Starter Kit', $livewireStarterKitVersion, $lacesLivewireStarterKitVersion],
             ])
             ->render();
+        $output->writeln('');
 
         $requiresBuild = ($laravelVersion !== $lacesLaravelVersion) || ($livewireStarterKitVersion !== $lacesLivewireStarterKitVersion);
 
@@ -64,7 +67,23 @@ class BuildCommand extends Command
             return Command::SUCCESS;
         }
 
-        $output->writeln('<info>[Laces]</> <comment>Version mismatch; building new Laces version...</>');
+        $output->writeln('<info>[Laces]</> <comment>Version mismatch detected. Continuing to build new Laces version.</>');
+
+        // Setup the temporary working folder.
+        $output->writeln('<info>[Laces]</> Setting up working folder...');
+        $result = SetupWorkingFolder::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $output);
+        }
+
+        // Install Laravel.
+        $output->writeln('<info>[Laces]</> Installing Laravel with the Livewire Starter Kit...');
+        $result = InstallLaravelWithLivewireStarterKit::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $output);
+        }
 
         return Command::SUCCESS;
     }
