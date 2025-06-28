@@ -9,6 +9,7 @@ use Laces\Commands\CheckDependenciesCommand;
 use Laces\Commands\GetLatestLacesVersionsCommand;
 use Laces\Commands\GetLatestLaravelVersionCommand;
 use Laces\Commands\GetLatestLivewireStarterKitVersionCommand;
+use Laces\Commands\InstallLaravelWithLivewireStarterKitCommand;
 use Laces\Commands\SetupWorkingFolderCommand;
 use Symfony\Component\Console\Application;
 
@@ -24,5 +25,6 @@ class App extends Application
         $this->add(new GetLatestLivewireStarterKitVersionCommand);
         $this->add(new GetLatestLacesVersionsCommand);
         $this->add(new SetupWorkingFolderCommand);
+        $this->add(new InstallLaravelWithLivewireStarterKitCommand);
     }
 }
