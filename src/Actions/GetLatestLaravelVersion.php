@@ -20,7 +20,7 @@ class GetLatestLaravelVersion
             $response = $client->request('GET', 'https://api.github.com/repos/laravel/framework/releases/latest');
             $data = $response->toArray();
 
-            return new GetLatestLaravelVersionDto(version: ltrim($data['tag_name'], 'v'));
+            return new GetLatestLaravelVersionDto(version: $data['tag_name']);
         } catch (Throwable $t) {
             return new GetLatestLaravelVersionDto(error: $t->getMessage());
         }

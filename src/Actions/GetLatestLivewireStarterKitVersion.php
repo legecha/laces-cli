@@ -20,7 +20,7 @@ class GetLatestLivewireStarterKitVersion
             $response = $client->request('GET', 'https://api.github.com/repos/laravel/livewire-starter-kit/releases/latest');
             $data = $response->toArray();
 
-            return new GetLatestLivewireStarterKitVersionDto(version: ltrim($data['tag_name'], 'v'));
+            return new GetLatestLivewireStarterKitVersionDto(version: $data['tag_name']);
         } catch (Throwable $t) {
             return new GetLatestLivewireStarterKitVersionDto(error: $t->getMessage());
         }
