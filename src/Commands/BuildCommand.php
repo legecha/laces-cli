@@ -34,7 +34,7 @@ class BuildCommand extends Command
         $output->writeln("<info>Welcome to Laces. Who needs bootstraps?</>\n");
 
         // Check dependencies.
-        $output->writeln("<info>[Laces]</> Checking dependencies...");
+        $output->writeln('<info>[Laces]</> Checking dependencies...');
         $result = CheckDependencies::run();
 
         if ($result->hasError()) {
@@ -59,12 +59,12 @@ class BuildCommand extends Command
         $requiresBuild = ($laravelVersion !== $lacesLaravelVersion) || ($livewireStarterKitVersion !== $lacesLivewireStarterKitVersion);
 
         if (! $requiresBuild) {
-            $output->writeln("<info>[Laces]</> <comment>Everything is up to date. No build required!</>");
+            $output->writeln('<info>[Laces]</> <comment>Everything is up to date. No build required!</>');
 
             return Command::SUCCESS;
         }
 
-        $output->writeln("<info>[Laces]</> <comment>Version mismatch; building new Laces version...</>");
+        $output->writeln('<info>[Laces]</> <comment>Version mismatch; building new Laces version...</>');
 
         return Command::SUCCESS;
     }
