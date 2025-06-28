@@ -19,7 +19,8 @@
         "php": "^8.2",
         "symfony/console": "^7.3",
         "symfony/process": "^7.3",
-        "symfony/http-client": "^7.3"
+        "symfony/http-client": "^7.3",
+        "symfony/filesystem": "^7.3"
     },
     "bin": ["bin/laces"],
     "require-dev": {
