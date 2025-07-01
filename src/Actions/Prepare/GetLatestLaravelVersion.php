@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Laces\Actions;
+namespace Laces\Actions\Prepare;
 
-use Laces\DataTransferObjects\GetLatestLaravelVersionDto;
+use Laces\DataTransferObjects\Prepare\GetLatestLaravelVersionDto;
 use Symfony\Component\HttpClient\HttpClient;
 use Throwable;
 

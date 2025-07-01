@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Laces\Actions;
+namespace Laces\Actions\Prepare;
 
-use Laces\DataTransferObjects\SetupWorkingFolderDto;
+use Laces\DataTransferObjects\Prepare\SetupWorkingFolderDto;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
@@ -17,7 +17,7 @@ class SetupWorkingFolder
     {
         try {
             $fs = new Filesystem;
-            $path = __DIR__.'/../../.working';
+            $path = __DIR__.'/../../../.working';
             $result = true;
             $messages = [];
 

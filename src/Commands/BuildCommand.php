@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Laces\Commands;
 
-use Laces\Actions\CheckDependencies;
-use Laces\Actions\GetLatestLacesVersions;
-use Laces\Actions\GetLatestLaravelVersion;
-use Laces\Actions\GetLatestLivewireStarterKitVersion;
-use Laces\Actions\HandleError;
-use Laces\Actions\InstallLaravelWithLivewireStarterKit;
-use Laces\Actions\SetupWorkingFolder;
+use Laces\Actions\Prepare\CheckDependencies;
+use Laces\Actions\Prepare\GetLatestLacesVersions;
+use Laces\Actions\Prepare\GetLatestLaravelVersion;
+use Laces\Actions\Prepare\GetLatestLivewireStarterKitVersion;
+use Laces\Actions\Prepare\InstallLaravelWithLivewireStarterKit;
+use Laces\Actions\Prepare\SetupWorkingFolder;
+use Laces\Actions\Support\HandleError;
 use Laces\Traits\Debuggable;
 use Laces\Traits\Interfaceable;
 use Symfony\Component\Console\Attribute\AsCommand;

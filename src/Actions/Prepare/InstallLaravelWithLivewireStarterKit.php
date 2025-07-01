@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Laces\Actions;
+namespace Laces\Actions\Prepare;
 
-use Laces\DataTransferObjects\InstallLaravelWithLivewireStarterKitDto;
+use Laces\DataTransferObjects\Prepare\InstallLaravelWithLivewireStarterKitDto;
 use Symfony\Component\Process\Process;
 use Throwable;
 
@@ -16,7 +16,7 @@ class InstallLaravelWithLivewireStarterKit
     public static function run(): InstallLaravelWithLivewireStarterKitDto
     {
         try {
-            $cwd = realpath(__DIR__.'/../../');
+            $cwd = realpath(__DIR__.'/../../../');
             $result = true;
             $error = null;
 

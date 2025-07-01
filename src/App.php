@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Laces;
 
 use Laces\Commands\BuildCommand;
-use Laces\Commands\CheckDependenciesCommand;
-use Laces\Commands\GetLatestLacesVersionsCommand;
-use Laces\Commands\GetLatestLaravelVersionCommand;
-use Laces\Commands\GetLatestLivewireStarterKitVersionCommand;
-use Laces\Commands\InstallLaravelWithLivewireStarterKitCommand;
-use Laces\Commands\SetupWorkingFolderCommand;
+use Laces\Commands\Prepare\CheckDependenciesCommand;
+use Laces\Commands\Prepare\GetLatestLacesVersionsCommand;
+use Laces\Commands\Prepare\GetLatestLaravelVersionCommand;
+use Laces\Commands\Prepare\GetLatestLivewireStarterKitVersionCommand;
+use Laces\Commands\Prepare\InstallLaravelWithLivewireStarterKitCommand;
+use Laces\Commands\Prepare\SetupWorkingFolderCommand;
 use Symfony\Component\Console\Application;
 
 class App extends Application

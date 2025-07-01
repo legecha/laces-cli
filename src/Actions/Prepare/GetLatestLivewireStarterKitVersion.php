@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Laces\Actions;
+namespace Laces\Actions\Prepare;
 
-use Laces\DataTransferObjects\GetLatestLivewireStarterKitVersionDto;
+use Laces\DataTransferObjects\Prepare\GetLatestLivewireStarterKitVersionDto;
 use Symfony\Component\HttpClient\HttpClient;
 use Throwable;
 

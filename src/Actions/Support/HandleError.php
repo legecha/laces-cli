@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laces\Actions;
+namespace Laces\Actions\Support;
 
 use Laces\Contracts\Error;
 use Symfony\Component\Console\Command\Command;

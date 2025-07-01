@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Laces\Actions;
+namespace Laces\Actions\Prepare;
 
-use Laces\DataTransferObjects\CheckDependenciesDto;
+use Laces\DataTransferObjects\Prepare\CheckDependenciesDto;
 use Symfony\Component\Process\Process;
 
 class CheckDependencies

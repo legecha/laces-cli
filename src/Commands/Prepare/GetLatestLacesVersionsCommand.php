@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Laces\Commands;
+namespace Laces\Commands\Prepare;
 
-use Laces\Actions\GetLatestLacesVersions;
-use Laces\Actions\HandleError;
+use Laces\Actions\Prepare\GetLatestLacesVersions;
+use Laces\Actions\Support\HandleError;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

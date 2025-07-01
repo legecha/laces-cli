@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laces\DataTransferObjects;
+namespace Laces\DataTransferObjects\Prepare;
 
 use Laces\Contracts\Error;
 

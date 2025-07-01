@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Laces\DataTransferObjects;
+namespace Laces\DataTransferObjects\Prepare;
 
 use Laces\Contracts\Error;
 
-readonly class GetLatestLivewireStarterKitVersionDto implements Error
+readonly class GetLatestLacesVersionsDto implements Error
 {
     public function __construct(
-        public ?string $version = null,
+        public ?string $laravelVersion = null,
+        public ?string $livewireStarterKitVersion = null,
         private ?string $error = null
     ) {}
 
@@ -18,7 +19,7 @@ readonly class GetLatestLivewireStarterKitVersionDto implements Error
      */
     public function hasError(): bool
     {
-        return $this->error !== null || $this->version === null;
+        return $this->error !== null || $this->laravelVersion === null || $this->livewireStarterKitVersion === null;
     }
 
     /**
