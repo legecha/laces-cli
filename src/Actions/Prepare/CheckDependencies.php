@@ -20,6 +20,10 @@ class CheckDependencies
             $missing[] = 'laravel (Laravel installer)';
         }
 
+        if (! self::commandIsAvailable('git')) {
+            $missing[] = 'git (Git cli)';
+        }
+
         return new CheckDependenciesDto(
             result: empty($missing),
             missing: $missing ?: null
