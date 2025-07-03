@@ -11,6 +11,7 @@ use Laces\Commands\Prepare\GetLatestLaravelVersionCommand;
 use Laces\Commands\Prepare\GetLatestLivewireStarterKitVersionCommand;
 use Laces\Commands\Prepare\InstallLaravelWithLivewireStarterKitCommand;
 use Laces\Commands\Prepare\SetupWorkingFolderCommand;
+use Laces\Commands\Process\EnforceStrictTypesCommand;
 use Symfony\Component\Console\Application;
 
 class App extends Application
@@ -20,11 +21,16 @@ class App extends Application
         parent::__construct('Laces CLI', '1.0.0');
 
         $this->add(new BuildCommand);
+
+        // Prepare.
         $this->add(new CheckDependenciesCommand);
         $this->add(new GetLatestLaravelVersionCommand);
         $this->add(new GetLatestLivewireStarterKitVersionCommand);
         $this->add(new GetLatestLacesVersionsCommand);
         $this->add(new SetupWorkingFolderCommand);
         $this->add(new InstallLaravelWithLivewireStarterKitCommand);
+
+        // Process.
+        $this->add(new EnforceStrictTypesCommand);
     }
 }
