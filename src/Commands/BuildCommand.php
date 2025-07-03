@@ -10,7 +10,10 @@ use Laces\Actions\Prepare\GetLatestLaravelVersion;
 use Laces\Actions\Prepare\GetLatestLivewireStarterKitVersion;
 use Laces\Actions\Prepare\InstallLaravelWithLivewireStarterKit;
 use Laces\Actions\Prepare\SetupWorkingFolder;
+use Laces\Actions\Process\EnforceStrictTypes;
 use Laces\Actions\Support\HandleError;
+use Laces\Actions\Support\PerformGitCommand;
+use Laces\Enums\Git;
 use Laces\Traits\Debuggable;
 use Laces\Traits\Interfaceable;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -18,6 +21,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 #[AsCommand(
     name: 'build',
@@ -33,14 +37,14 @@ class BuildCommand extends Command
         $this->input = $input;
         $this->output = $output;
 
-        $output->writeln("<info>Welcome to Laces. Who needs bootstraps?</>\n");
+        $this->output->writeln("<info>Welcome to Laces. Who needs bootstraps?</>\n");
 
         // Check dependencies.
-        $output->writeln('<info>[Laces]</> Checking dependencies...');
+        $this->output->writeln('<info>[Laces]</> Checking dependencies...');
         $result = CheckDependencies::run();
 
         if ($result->hasError()) {
-            return HandleError::run($result, $output);
+            return HandleError::run($result, $this->output);
         }
 
         // Get the latest versions.
@@ -48,8 +52,8 @@ class BuildCommand extends Command
         $livewireStarterKitVersion = $this->livewireStarterKitVersion();
         [$lacesLaravelVersion, $lacesLivewireStarterKitVersion] = $this->lacesVersions();
 
-        $output->writeln('');
-        $table = new Table($output);
+        $this->output->writeln('');
+        $table = new Table($this->output);
         $table
             ->setHeaders(['Name', 'Latest Version', 'Laces Version'])
             ->setRows([
@@ -57,32 +61,83 @@ class BuildCommand extends Command
                 ['Livewire Starter Kit', $livewireStarterKitVersion, $lacesLivewireStarterKitVersion],
             ])
             ->render();
-        $output->writeln('');
+        $this->output->writeln('');
 
         $requiresBuild = ($laravelVersion !== $lacesLaravelVersion) || ($livewireStarterKitVersion !== $lacesLivewireStarterKitVersion);
 
         if (! $requiresBuild) {
-            $output->writeln('<info>[Laces]</> <comment>Everything is up to date. No build required!</>');
+            $this->output->writeln('<info>[Laces]</> <comment>Everything is up to date. No build required!</>');
 
             return Command::SUCCESS;
         }
 
-        $output->writeln('<info>[Laces]</> <comment>Version mismatch detected. Continuing to build new Laces version.</>');
+        $this->output->writeln('<info>[Laces]</> <comment>Version mismatch detected. Continuing to build new Laces version.</>');
 
         // Setup the temporary working folder.
-        $output->writeln('<info>[Laces]</> Setting up working folder...');
+        $this->output->writeln('<info>[Laces]</> Setting up working folder...');
         $result = SetupWorkingFolder::run();
 
         if ($result->hasError()) {
-            return HandleError::run($result, $output);
+            return HandleError::run($result, $this->output);
         }
 
         // Install Laravel.
-        $output->writeln('<info>[Laces]</> Installing Laravel with the Livewire Starter Kit...');
+        $this->output->writeln('<info>[Laces]</> Installing Laravel with the Livewire Starter Kit...');
         $result = InstallLaravelWithLivewireStarterKit::run();
 
         if ($result->hasError()) {
-            return HandleError::run($result, $output);
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Init,
+            Git::Add,
+            [Git::Commit, 'Install Laravel with the Livewire Starter Kit'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
+        // Enforce strict types.
+        $this->output->writeln('<info>[Laces]</> Enforcing strict types...');
+        $result = EnforceStrictTypes::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::Commit, 'Enforce strict types'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
+        return Command::SUCCESS;
+    }
+
+    /**
+     * Perform Git commands.
+     *
+     * @param  array<int, Laces\Enums\Git|array<Laces\Enums\Git, string>>  ...$commands
+     */
+    protected function git(Git|array ...$commands): ?int
+    {
+        $this->output->writeln('<info>[Laces]</> <comment>Git commands performed.</>');
+
+        try {
+            foreach ($commands as $command) {
+                if ($command instanceof Git) {
+                    PerformGitCommand::run($command);
+                } else {
+                    PerformGitCommand::run($command[0], $command[1]);
+                }
+            }
+        } catch (Throwable $t) {
+            $this->output->writeln('<info>[Laces]</> <error>Could not perform Git command: '.$t->getMessage());
+
+            return Command::FAILURE;
         }
 
         return Command::SUCCESS;
