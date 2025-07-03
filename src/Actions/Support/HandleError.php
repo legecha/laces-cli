@@ -15,7 +15,7 @@ class HandleError
      */
     public static function run(Error $errorResult, OutputInterface $output): int
     {
-        $output->writeln('<error>'.$errorResult->errorMessage().'</error>');
+        $output->writeln('<error>'.$errorResult->errorMessage().'</>');
 
         return Command::FAILURE;
     }
