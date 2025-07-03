@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * CLI command to get the latest Livewire Starter Kit version.
  */
 #[AsCommand(
-    name: 'starter-kit-version',
+    name: 'prepare:starter-kit-version',
     description: 'Get the latest Livewire Starter Kit version'
 )]
 class GetLatestLivewireStarterKitVersionCommand extends Command

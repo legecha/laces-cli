@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * CLI command to install Laravel with the Livewire Starter Kit into the .working directory.
  */
 #[AsCommand(
-    name: 'install',
+    name: 'prepare:install',
     description: 'Installs Laravel with Livewire Starter Kit to the .working directory'
 )]
 class InstallLaravelWithLivewireStarterKitCommand extends Command

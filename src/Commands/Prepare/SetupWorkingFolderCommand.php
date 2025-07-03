@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * CLI command to setup the temporary working folder for a fresh Laravel and Livewire Starter Kit installation.
  */
 #[AsCommand(
-    name: 'working-folder',
+    name: 'prepare:working-folder',
     description: 'Sets up the temporary working folder'
 )]
 class SetupWorkingFolderCommand extends Command

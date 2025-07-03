@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * CLI command to get the latest Laravel version.
  */
 #[AsCommand(
-    name: 'laravel-version',
+    name: 'prepare:laravel-version',
     description: 'Get the latest Laravel version'
 )]
 class GetLatestLaravelVersionCommand extends Command

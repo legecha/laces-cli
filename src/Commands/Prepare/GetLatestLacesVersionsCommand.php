@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * CLI command to get the latest Laravel and Livewire Starter Kit versions used by Laces.
  */
 #[AsCommand(
-    name: 'laces-versions',
+    name: 'prepare:laces-versions',
     description: 'Get the latest Laravel and Livewire Starter Kit versions that Laces uses'
 )]
 class GetLatestLacesVersionsCommand extends Command

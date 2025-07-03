@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * CLI command to verify required external dependencies.
  */
 #[AsCommand(
-    name: 'dependencies',
+    name: 'prepare:dependencies',
     description: 'Checks that required dependencies are installed'
 )]
 class CheckDependenciesCommand extends Command
