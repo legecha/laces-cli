@@ -12,6 +12,7 @@ use Laces\Actions\Prepare\InstallLaravelWithLivewireStarterKit;
 use Laces\Actions\Prepare\SetupWorkingFolder;
 use Laces\Actions\Process\Config;
 use Laces\Actions\Process\EnforceStrictTypes;
+use Laces\Actions\Process\Password;
 use Laces\Actions\Process\Testing;
 use Laces\Actions\Support\HandleError;
 use Laces\Actions\Support\PerformGitCommand;
@@ -143,6 +144,22 @@ class BuildCommand extends Command
         $result = $this->git(
             Git::Add,
             [Git::Commit, 'Improve testing setup'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
+        // Strengthen password requirements.
+        $this->output->writeln('<info>[Laces]</> Strengthening password requirements...');
+        $result = Password::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::Commit, 'Strengthened password requirements'],
         );
         if ($result !== Command::SUCCESS) {
             return $result;
