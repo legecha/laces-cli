@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 #[AsCommand(
     name: 'process:strict-types',
-    description: 'Enforce strict types on all PHP files.'
+    description: 'Enforce strict types on all PHP files'
 )]
 class EnforceStrictTypesCommand extends Command
 {
