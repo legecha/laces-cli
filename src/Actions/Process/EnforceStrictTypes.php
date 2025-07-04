@@ -33,11 +33,13 @@ class EnforceStrictTypes
     public static function run(): EnforceStrictTypesDto
     {
         $fs = new Filesystem;
+        $installDir = __DIR__.'/../../../.working/install/';
 
         try {
+            // Add strict types.
             foreach (self::$targetDirs as $dir) {
                 $iterator = new RecursiveIteratorIterator(
-                    new RecursiveDirectoryIterator(__DIR__.'/../../../.working/install/'.$dir, RecursiveDirectoryIterator::SKIP_DOTS)
+                    new RecursiveDirectoryIterator($installDir.$dir, RecursiveDirectoryIterator::SKIP_DOTS)
                 );
                 $phpFiles = new RegexIterator($iterator, '/\.php$/');
 
@@ -61,6 +63,21 @@ class EnforceStrictTypes
                     }
                 }
             }
+
+            // Fix any files that fail strict types.
+            $path = $installDir.'app/Livewire/Auth/ResetPassword.php';
+            $contents = file_get_contents($path);
+            if ($contents === false) {
+                throw new RuntimeException("Unable to read file: $path");
+            }
+
+            $newContents = str_replace(
+                '$this->email = request()->string(\'email\');',
+                '$this->email = (string) request()->string(\'email\');',
+                $contents
+            );
+
+            $fs->dumpFile($path, $newContents);
         } catch (Throwable $t) {
             return new EnforceStrictTypesDto(
                 result: false,
