@@ -13,6 +13,7 @@ use Laces\Commands\Prepare\InstallLaravelWithLivewireStarterKitCommand;
 use Laces\Commands\Prepare\SetupWorkingFolderCommand;
 use Laces\Commands\Process\ConfigCommand;
 use Laces\Commands\Process\EnforceStrictTypesCommand;
+use Laces\Commands\Process\TestingCommand;
 use Symfony\Component\Console\Application;
 
 class App extends Application
@@ -34,5 +35,6 @@ class App extends Application
         // Process.
         $this->add(new EnforceStrictTypesCommand);
         $this->add(new ConfigCommand);
+        $this->add(new TestingCommand);
     }
 }

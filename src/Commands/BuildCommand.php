@@ -12,6 +12,7 @@ use Laces\Actions\Prepare\InstallLaravelWithLivewireStarterKit;
 use Laces\Actions\Prepare\SetupWorkingFolder;
 use Laces\Actions\Process\Config;
 use Laces\Actions\Process\EnforceStrictTypes;
+use Laces\Actions\Process\Testing;
 use Laces\Actions\Support\HandleError;
 use Laces\Actions\Support\PerformGitCommand;
 use Laces\Enums\Git;
@@ -126,6 +127,22 @@ class BuildCommand extends Command
         $result = $this->git(
             Git::Add,
             [Git::Commit, 'Setup config'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
+        // Improve testing setup.
+        $this->output->writeln('<info>[Laces]</> Improving testing setup...');
+        $result = Testing::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::Commit, 'Improve testing setup'],
         );
         if ($result !== Command::SUCCESS) {
             return $result;
