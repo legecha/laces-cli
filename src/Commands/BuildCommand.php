@@ -10,6 +10,7 @@ use Laces\Actions\Prepare\GetLatestLaravelVersion;
 use Laces\Actions\Prepare\GetLatestLivewireStarterKitVersion;
 use Laces\Actions\Prepare\InstallLaravelWithLivewireStarterKit;
 use Laces\Actions\Prepare\SetupWorkingFolder;
+use Laces\Actions\Process\Config;
 use Laces\Actions\Process\EnforceStrictTypes;
 use Laces\Actions\Support\HandleError;
 use Laces\Actions\Support\PerformGitCommand;
@@ -109,6 +110,22 @@ class BuildCommand extends Command
         $result = $this->git(
             Git::Add,
             [Git::Commit, 'Enforce strict types'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
+        // Setup config.
+        $this->output->writeln('<info>[Laces]</> Setting up config...');
+        $result = Config::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::Commit, 'Setup config'],
         );
         if ($result !== Command::SUCCESS) {
             return $result;
