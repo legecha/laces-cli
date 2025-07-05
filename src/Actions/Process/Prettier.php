@@ -17,10 +17,10 @@ class Prettier
      */
     public static function run(): PrettierDto
     {
-        try {
-            $fs = new Filesystem;
-            $installDir = __DIR__.'/../../../.working/install/';
+        $fs = new Filesystem;
+        $installDir = __DIR__.'/../../../.working/install/';
 
+        try {
             Process::fromShellCommandline('npm install --save-dev prettier-plugin-blade@^2 prettier prettier-plugin-tailwindcss')
                 ->setWorkingDirectory($installDir)
                 ->setTimeout(300)

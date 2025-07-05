@@ -16,6 +16,7 @@ use Laces\Actions\Process\EnforceStrictTypes;
 use Laces\Actions\Process\Password;
 use Laces\Actions\Process\Prettier;
 use Laces\Actions\Process\Testing;
+use Laces\Actions\Process\Views;
 use Laces\Actions\Process\Workflow;
 use Laces\Actions\Support\HandleError;
 use Laces\Actions\Support\PerformGitCommand;
@@ -201,6 +202,22 @@ class BuildCommand extends Command
         $result = $this->git(
             Git::Add,
             [Git::MaybeCommit, 'Install Flux Pro'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
+        // Improve default views.
+        $this->output->writeln('<info>[Laces]</> Improving default views...');
+        $result = Views::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::Commit, 'Improve default views'],
         );
         if ($result !== Command::SUCCESS) {
             return $result;
