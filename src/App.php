@@ -18,6 +18,7 @@ use Laces\Commands\Process\FluxCommand;
 use Laces\Commands\Process\PasswordCommand;
 use Laces\Commands\Process\PrettierCommand;
 use Laces\Commands\Process\TestingCommand;
+use Laces\Commands\Process\VersionCommand;
 use Laces\Commands\Process\ViewsCommand;
 use Laces\Commands\Process\WorkflowCommand;
 use Symfony\Component\Console\Application;
@@ -48,5 +49,6 @@ class App extends Application
         $this->add(new DusterCommand);
         $this->add(new PrettierCommand);
         $this->add(new ViewsCommand);
+        $this->add(new VersionCommand);
     }
 }

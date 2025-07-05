@@ -16,6 +16,7 @@ use Laces\Actions\Process\EnforceStrictTypes;
 use Laces\Actions\Process\Password;
 use Laces\Actions\Process\Prettier;
 use Laces\Actions\Process\Testing;
+use Laces\Actions\Process\Version;
 use Laces\Actions\Process\Views;
 use Laces\Actions\Process\Workflow;
 use Laces\Actions\Support\HandleError;
@@ -250,6 +251,22 @@ class BuildCommand extends Command
         $result = $this->git(
             Git::Add,
             [Git::Commit, 'Install Prettier'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
+        // Update Laces versions.
+        $this->output->writeln('<info>[Laces]</> Updating Laces versions...');
+        $result = Version::run($laravelVersion, $livewireStarterKitVersion);
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::Commit, 'Update Laces versions'],
         );
         if ($result !== Command::SUCCESS) {
             return $result;
