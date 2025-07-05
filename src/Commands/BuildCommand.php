@@ -14,6 +14,7 @@ use Laces\Actions\Process\Config;
 use Laces\Actions\Process\EnforceStrictTypes;
 use Laces\Actions\Process\Password;
 use Laces\Actions\Process\Testing;
+use Laces\Actions\Process\Workflow;
 use Laces\Actions\Support\HandleError;
 use Laces\Actions\Support\PerformGitCommand;
 use Laces\Enums\Git;
@@ -160,6 +161,22 @@ class BuildCommand extends Command
         $result = $this->git(
             Git::Add,
             [Git::Commit, 'Strengthened password requirements'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
+        // Remove GitHub workflows.
+        $this->output->writeln('<info>[Laces]</> Removing GitHub workflows...');
+        $result = Workflow::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::Commit, 'Remove GitHub workflows'],
         );
         if ($result !== Command::SUCCESS) {
             return $result;
