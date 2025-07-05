@@ -11,6 +11,7 @@ use Laces\Actions\Prepare\GetLatestLivewireStarterKitVersion;
 use Laces\Actions\Prepare\InstallLaravelWithLivewireStarterKit;
 use Laces\Actions\Prepare\SetupWorkingFolder;
 use Laces\Actions\Process\Config;
+use Laces\Actions\Process\Duster;
 use Laces\Actions\Process\EnforceStrictTypes;
 use Laces\Actions\Process\Password;
 use Laces\Actions\Process\Testing;
@@ -199,6 +200,22 @@ class BuildCommand extends Command
         $result = $this->git(
             Git::Add,
             [Git::MaybeCommit, 'Install Flux Pro'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
+        // Install Duster.
+        $this->output->writeln('<info>[Laces]</> Install Duster...');
+        $result = Duster::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::Commit, 'Install Duster'],
         );
         if ($result !== Command::SUCCESS) {
             return $result;
