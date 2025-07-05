@@ -13,7 +13,7 @@ use Throwable;
 class Duster
 {
     /**
-     * The new password strength PHP.
+     * The new composer scripts JSON.
      */
     public static string $composerScripts = <<<'PHP'
 ],

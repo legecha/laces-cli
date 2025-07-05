@@ -16,6 +16,7 @@ use Laces\Commands\Process\DusterCommand;
 use Laces\Commands\Process\EnforceStrictTypesCommand;
 use Laces\Commands\Process\FluxCommand;
 use Laces\Commands\Process\PasswordCommand;
+use Laces\Commands\Process\PrettierCommand;
 use Laces\Commands\Process\TestingCommand;
 use Laces\Commands\Process\WorkflowCommand;
 use Symfony\Component\Console\Application;
@@ -44,5 +45,6 @@ class App extends Application
         $this->add(new WorkflowCommand);
         $this->add(new FluxCommand);
         $this->add(new DusterCommand);
+        $this->add(new PrettierCommand);
     }
 }

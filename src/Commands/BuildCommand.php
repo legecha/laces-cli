@@ -14,6 +14,7 @@ use Laces\Actions\Process\Config;
 use Laces\Actions\Process\Duster;
 use Laces\Actions\Process\EnforceStrictTypes;
 use Laces\Actions\Process\Password;
+use Laces\Actions\Process\Prettier;
 use Laces\Actions\Process\Testing;
 use Laces\Actions\Process\Workflow;
 use Laces\Actions\Support\HandleError;
@@ -216,6 +217,22 @@ class BuildCommand extends Command
         $result = $this->git(
             Git::Add,
             [Git::Commit, 'Install Duster'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
+        // Install Prettier.
+        $this->output->writeln('<info>[Laces]</> Install Prettier...');
+        $result = Prettier::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::Commit, 'Install Prettier'],
         );
         if ($result !== Command::SUCCESS) {
             return $result;
