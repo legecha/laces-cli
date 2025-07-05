@@ -13,6 +13,7 @@ use Laces\Commands\Prepare\InstallLaravelWithLivewireStarterKitCommand;
 use Laces\Commands\Prepare\SetupWorkingFolderCommand;
 use Laces\Commands\Process\ConfigCommand;
 use Laces\Commands\Process\EnforceStrictTypesCommand;
+use Laces\Commands\Process\FluxCommand;
 use Laces\Commands\Process\PasswordCommand;
 use Laces\Commands\Process\TestingCommand;
 use Laces\Commands\Process\WorkflowCommand;
@@ -40,5 +41,6 @@ class App extends Application
         $this->add(new TestingCommand);
         $this->add(new PasswordCommand);
         $this->add(new WorkflowCommand);
+        $this->add(new FluxCommand);
     }
 }

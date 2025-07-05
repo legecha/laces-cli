@@ -9,4 +9,5 @@ enum Git: string
     case Init = 'init';
     case Add = 'add';
     case Commit = 'commit';
+    case MaybeCommit = 'maybe-commit';
 }

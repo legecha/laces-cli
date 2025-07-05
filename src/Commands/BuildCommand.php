@@ -17,12 +17,14 @@ use Laces\Actions\Process\Testing;
 use Laces\Actions\Process\Workflow;
 use Laces\Actions\Support\HandleError;
 use Laces\Actions\Support\PerformGitCommand;
+use Laces\DataTransferObjects\Process\FluxDto;
 use Laces\Enums\Git;
 use Laces\Traits\Debuggable;
 use Laces\Traits\Interfaceable;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
@@ -182,6 +184,26 @@ class BuildCommand extends Command
             return $result;
         }
 
+        // Install Flux Pro.
+        $result = $this->getApplication()->doRun(new ArrayInput([
+            'command' => 'process:flux',
+        ]), $this->output);
+
+        if ($result !== Command::SUCCESS) {
+            return HandleError::run(new FluxDto(
+                result: false,
+                errors: ['Could not install Flux pro'],
+            ), $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::MaybeCommit, 'Install Flux Pro'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
         return Command::SUCCESS;
     }
 
@@ -192,8 +214,6 @@ class BuildCommand extends Command
      */
     protected function git(Git|array ...$commands): ?int
     {
-        $this->output->writeln('<info>[Laces]</> <comment>Git commands performed.</>');
-
         try {
             foreach ($commands as $command) {
                 if ($command instanceof Git) {
@@ -207,6 +227,8 @@ class BuildCommand extends Command
 
             return Command::FAILURE;
         }
+
+        $this->output->writeln('<info>[Laces]</> <comment>Git commands performed.</>');
 
         return Command::SUCCESS;
     }

@@ -14,13 +14,30 @@ class PerformGitCommand
      */
     public static function run(Git $command, ?string $message = null): void
     {
+        $installDir = __DIR__.'/../../../.working/install/';
+
+        // Allow attempted commits based on the staged state.
+        // When clean, `git diff --cached --quiet` returns 0 (success), meaning no staged changes.
+        // When dirty (i.e., staged changes exist), it returns 1 (failure), and we proceed with the commit.
+        if ($command === Git::MaybeCommit) {
+            $check = new Process(['git', 'diff', '--cached', '--quiet']);
+            $check->setWorkingDirectory($installDir);
+            $check->run();
+
+            if ($check->isSuccessful()) {
+                return;
+            }
+
+            $command = Git::Commit;
+        }
+
         $process = match ($command) {
             Git::Init => new Process(['git', 'init']),
             Git::Add => new Process(['git', 'add', '.']),
             Git::Commit => new Process(['git', 'commit', '-m', $message]),
         };
 
-        $process->setWorkingDirectory(__DIR__.'/../../../.working/install');
+        $process->setWorkingDirectory($installDir);
         $process->mustRun();
     }
 }
