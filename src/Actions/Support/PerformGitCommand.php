@@ -32,9 +32,11 @@ class PerformGitCommand
         }
 
         $process = match ($command) {
-            Git::Init => new Process(['git', 'init']),
             Git::Add => new Process(['git', 'add', '.']),
+            Git::AddRemote => new Process(['git', 'remote', 'add', 'origin', 'git:legecha/laces.git']),
             Git::Commit => new Process(['git', 'commit', '-m', $message]),
+            Git::ForcePush => new Process(['git', 'push', '-u', 'origin', '--force', 'main']),
+            Git::Init => new Process(['git', 'init']),
         };
 
         $process->setWorkingDirectory($installDir);

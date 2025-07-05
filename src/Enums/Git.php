@@ -6,8 +6,10 @@ namespace Laces\Enums;
 
 enum Git: string
 {
-    case Init = 'init';
     case Add = 'add';
+    case AddRemote = 'add-remote';
     case Commit = 'commit';
+    case ForcePush = 'force-push';
+    case Init = 'init';
     case MaybeCommit = 'maybe-commit';
 }

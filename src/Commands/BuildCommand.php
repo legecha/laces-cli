@@ -23,13 +23,13 @@ use Laces\Actions\Support\HandleError;
 use Laces\Actions\Support\PerformGitCommand;
 use Laces\DataTransferObjects\Process\FluxDto;
 use Laces\Enums\Git;
-use Laces\Traits\Debuggable;
 use Laces\Traits\Interfaceable;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
@@ -39,8 +39,7 @@ use Throwable;
 )]
 class BuildCommand extends Command
 {
-    use Debuggable,
-        Interfaceable;
+    use Interfaceable;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -76,12 +75,16 @@ class BuildCommand extends Command
         $requiresBuild = ($laravelVersion !== $lacesLaravelVersion) || ($livewireStarterKitVersion !== $lacesLivewireStarterKitVersion);
 
         if (! $requiresBuild) {
-            $this->output->writeln('<info>[Laces]</> <comment>Everything is up to date. No build required!</>');
+            if ($input->getOption('force')) {
+                $this->output->writeln('<info>[Laces]</> <comment>No build required, but --force flag was set!</>');
+            } else {
+                $this->output->writeln('<info>[Laces]</> <comment>Everything is up to date. No build required!</>');
 
-            return Command::SUCCESS;
+                return Command::SUCCESS;
+            }
+        } else {
+            $this->output->writeln('<info>[Laces]</> <comment>Version mismatch detected. Continuing to build new Laces version.</>');
         }
-
-        $this->output->writeln('<info>[Laces]</> <comment>Version mismatch detected. Continuing to build new Laces version.</>');
 
         // Setup the temporary working folder.
         $this->output->writeln('<info>[Laces]</> Setting up working folder...');
@@ -272,6 +275,15 @@ class BuildCommand extends Command
             return $result;
         }
 
+        // Force push to live.
+        $result = $this->git(
+            Git::AddRemote,
+            Git::ForcePush,
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
         return Command::SUCCESS;
     }
 
@@ -354,6 +366,6 @@ class BuildCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setupDebuggable();
+        $this->addOption('force', 'f', InputOption::VALUE_NONE, 'Force build when versions are identical');
     }
 }
