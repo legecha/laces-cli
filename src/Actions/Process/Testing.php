@@ -26,6 +26,9 @@ class Testing
                 $installDir.'tests/Unit/ExampleTest.php',
             ]);
 
+            // Ensure Git doesn't hoover up the Unit folder.
+            $fs->touch($installDir.'tests/Unit/.gitkeep');
+
             // Improve Pest setup file.
             $fs->dumpFile(
                 $installDir.'tests/Pest.php',
