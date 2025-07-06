@@ -18,7 +18,7 @@ class Config
         try {
             // Setup .env file.
             ReplaceContentsInFile::run(
-                '.env',
+                '.env.example',
                 'APP_FAKER_LOCALE=en_US',
                 "APP_FAKER_LOCALE=en_GB\nAPP_TIMEZONE=\"Europe/London\"",
             );
