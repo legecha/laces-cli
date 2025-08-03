@@ -17,7 +17,7 @@ This starter kit uses the official Livewire starter kit as a base, and improves 
 - Sets strong password defaults
 - Removes GitHub workflows
 - Installs Flux UI Pro
-- Improve views to allow guests and replace static welcome page
+- Improves views to allow guests and replace static welcome page
 - Installs Duster (providing `composer fix` and `composer lint`)
 - Installs Prettier with Blade and Tailwind CSS support (providing `npm run format`)
 
@@ -27,16 +27,19 @@ This starter kit uses the official Livewire starter kit as a base, and improves 
 
 Whenever a new Laravel or Livewire starter kit version is released, this starter kit will update automatically.
 
-As with all starter kits, once you use it, the code is yours — you won’t be updating or maintaining anything further.
+As with all starter kits, after you include it during installation, the code is then yours — you won’t be pulling in
+updates or wondering what best practices to use - change, fix, shout at and laugh at everything as you see fit.
 
 ## Installation
 
-This starter kit is made to be used with the most recent Laravel version.
+This starter kit is made to be used with the most recent Laravel and Livewire Starter Kit versions.
 
 `laravel new --using=legecha/laces`
 
 ## Requests
 
-I'm happy to take pull requests for changes, but remember this is an opinionated starter kit. You are also welcome to
-send pull requests to the [laces-cli](https://github.com/legecha/laces-cli) tool to provide non-default options or
-customisations you may want for yourself, or to create your own starter packages.
+I'm more than happy to consider changes to this starter kit, but remember it's pretty opinionated! You may be better
+forking it and coming up with your own version if there are drastic differences.
+
+It's best to send pull requests to the [laces-cli](https://github.com/legecha/laces-cli) tool because this starter kit
+is automatically generated from there.
