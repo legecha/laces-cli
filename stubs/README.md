@@ -1,6 +1,6 @@
 # Laces
 
-> The Laces starter kit - an opinionated set of improvements to the [official Laravel starter kit for Livewire](https://github.com/laravel/livewire-starter-kit).
+> The Laces starter kit — an opinionated set of improvements to the [official Laravel starter kit for Livewire](https://github.com/laravel/livewire-starter-kit).
 
 ## Why?
 
@@ -28,7 +28,7 @@ This starter kit uses the official Livewire starter kit as a base, and improves 
 Whenever a new Laravel or Livewire starter kit version is released, this starter kit will update automatically.
 
 As with all starter kits, after you include it during installation, the code is then yours — you won’t be pulling in
-updates or wondering what best practices to use - change, fix, shout at and laugh at everything as you see fit.
+updates or wondering what best practices to use — change, fix, shout at and laugh at everything as you see fit.
 
 ## Installation
 
