@@ -16,6 +16,7 @@ use Laces\Commands\Process\DusterCommand;
 use Laces\Commands\Process\EnforceStrictTypesCommand;
 use Laces\Commands\Process\FluxCommand;
 use Laces\Commands\Process\PasswordCommand;
+use Laces\Commands\Process\PostInstallCommand;
 use Laces\Commands\Process\PrettierCommand;
 use Laces\Commands\Process\TestingCommand;
 use Laces\Commands\Process\VersionCommand;
@@ -49,6 +50,7 @@ class App extends Application
         $this->add(new DusterCommand);
         $this->add(new PrettierCommand);
         $this->add(new ViewsCommand);
+        $this->add(new PostInstallCommand);
         $this->add(new VersionCommand);
     }
 }

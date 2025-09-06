@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Laces\Commands\Process;
 
-use Laces\Actions\Prepare\GetLatestLaravelVersion;
-use Laces\Actions\Prepare\GetLatestLivewireStarterKitVersion;
-use Laces\Actions\Process\Version;
+use Laces\Actions\Process\PostInstall;
 use Laces\Actions\Support\HandleError;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -14,31 +12,28 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * CLI command to update Laces versions.
+ * CLI command to setup the post install script.
  */
 #[AsCommand(
-    name: 'process:version',
-    description: 'Update Laces versions'
+    name: 'process:post-install',
+    description: 'Setup post-install script'
 )]
-class VersionCommand extends Command
+class PostInstallCommand extends Command
 {
     /**
      * Executes the command.
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('<info>Updating Laces versions...</info>');
+        $output->writeln('<info>Setting up post-install script...</info>');
 
-        $result = Version::run(
-            GetLatestLaravelVersion::run()->version,
-            GetLatestLivewireStarterKitVersion::run()->version,
-        );
+        $result = PostInstall::run();
 
         if ($result->hasError()) {
             return HandleError::run($result, $output);
         }
 
-        $output->writeln("\n<comment>Successfully updated Laces versions.</>");
+        $output->writeln("\n<comment>Successfully setup post-install script.</>");
 
         return Command::SUCCESS;
     }

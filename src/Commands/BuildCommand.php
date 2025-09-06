@@ -14,6 +14,7 @@ use Laces\Actions\Process\Config;
 use Laces\Actions\Process\Duster;
 use Laces\Actions\Process\EnforceStrictTypes;
 use Laces\Actions\Process\Password;
+use Laces\Actions\Process\PostInstall;
 use Laces\Actions\Process\Prettier;
 use Laces\Actions\Process\Testing;
 use Laces\Actions\Process\Version;
@@ -31,6 +32,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 use Throwable;
 
 #[AsCommand(
@@ -259,9 +261,32 @@ class BuildCommand extends Command
             return $result;
         }
 
+        // Setup the post-install script.
+        $this->output->writeln('<info>[Laces]</> Setting up post-install script...');
+        $result = PostInstall::run();
+
+        if ($result->hasError()) {
+            return HandleError::run($result, $this->output);
+        }
+
+        $result = $this->git(
+            Git::Add,
+            [Git::Commit, 'Setup post-install script'],
+        );
+        if ($result !== Command::SUCCESS) {
+            return $result;
+        }
+
         // Update Laces versions.
         $this->output->writeln('<info>[Laces]</> Updating Laces versions...');
         $result = Version::run($laravelVersion, $livewireStarterKitVersion);
+
+        // Run composer update to ensure the lock file is up to date.
+        $installDir = __DIR__.'/../../.working/install/';
+        Process::fromShellCommandline('composer update')
+            ->setWorkingDirectory($installDir)
+            ->setTimeout(300)
+            ->mustRun();
 
         if ($result->hasError()) {
             return HandleError::run($result, $this->output);
