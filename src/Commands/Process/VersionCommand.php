@@ -38,7 +38,7 @@ class VersionCommand extends Command
             return HandleError::run($result, $output);
         }
 
-        $output->writeln("\n<comment>Successfully updates Laces versions.</>");
+        $output->writeln("\n<comment>Successfully updated Laces versions.</>");
 
         return Command::SUCCESS;
     }
